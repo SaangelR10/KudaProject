@@ -8,7 +8,7 @@ const initialState = {
     {
       id: 'welcome',
       type: 'bot',
-      content: '¡Hola! Soy tu Asistente Financiero Personal. Puedes ingresar tus gastos e ingresos directamente aquí. Por ejemplo: "Gasté $50 en comida" o "Recibí $500 de mi trabajo". ¿En qué puedo ayudarte hoy?',
+      content: '¡Hola! Soy FinBot Pro, tu experto financiero inteligente 🤖💰\n\nPuedo ayudarte a:\n• Registrar gastos e ingresos\n• Analizar tu presupuesto\n• Crear metas de ahorro\n• Dar recomendaciones personalizadas\n\nSolo dime qué necesitas, por ejemplo: "Gasté $50 en comida" o "¿Cómo está mi presupuesto?"',
       timestamp: new Date().toISOString()
     }
   ],

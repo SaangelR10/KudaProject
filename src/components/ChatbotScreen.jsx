@@ -42,20 +42,20 @@ const ChatbotScreen = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
+      {/* Header - Fixed on mobile */}
       <motion.div 
-        className="bg-white border-b border-gray-200 px-4 py-3"
+        className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center shadow-lg">
             <Bot className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">Asistente Financiero</h1>
-            <p className="text-sm text-gray-500">Tu compañero personal de finanzas</p>
+            <h1 className="text-lg font-bold text-gray-900">FinBot Pro</h1>
+            <p className="text-sm text-gray-500">Tu experto financiero inteligente</p>
           </div>
         </div>
       </motion.div>
