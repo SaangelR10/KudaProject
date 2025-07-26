@@ -2,7 +2,7 @@ services:
   - type: web
     name: asistente-financiero-latam
     env: static
-    buildCommand: ./render-build.sh
+    buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_VERSION
