@@ -1,6 +1,7 @@
 {
   "name": "asistente-financiero-latam",
   "version": "1.0.0",
+  "type": "module",
   "description": "Asistente Financiero Personal con IA para América Latina",
   "main": "index.js",
   "scripts": {
