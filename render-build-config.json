@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm ci && npm run build",
+  "publishDirectory": "dist",
+  "nodeVersion": "20.11.0",
+  "environment": "static"
+}
