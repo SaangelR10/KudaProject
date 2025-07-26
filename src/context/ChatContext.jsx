@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
 import { useFinancialData } from './FinancialDataContext'
+import dialogflowService from '../services/dialogflowService'
 
 const ChatContext = createContext()
 
@@ -190,20 +191,48 @@ export const ChatProvider = ({ children }) => {
     dispatch({ type: 'ADD_MESSAGE', payload: userMessage })
     dispatch({ type: 'SET_TYPING', payload: true })
     
-    // Simulate AI processing time
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000))
-    
-    // Generate AI response
-    const aiResponse = await generateAIResponse(content)
-    
-    const botMessage = {
-      id: (Date.now() + 1).toString(),
-      type: 'bot',
-      content: aiResponse,
-      timestamp: new Date().toISOString()
+    try {
+      // Get current financial data
+      const stats = getMonthlyStats()
+      const financialData = {
+        totalIncome: stats.totalIncome,
+        totalExpenses: stats.totalExpenses,
+        savings: stats.savings,
+        monthlyBudget: monthlyBudget
+      }
+      
+      // Send to Dialogflow
+      const dialogflowResponse = await dialogflowService.sendMessage(content, financialData)
+      
+      const botMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'bot',
+        content: dialogflowResponse.text,
+        timestamp: new Date().toISOString()
+      }
+      
+      dispatch({ type: 'ADD_MESSAGE', payload: botMessage })
+      
+      // Handle actions from Dialogflow
+      if (dialogflowResponse.action === 'ADD_TRANSACTION') {
+        addTransaction(dialogflowResponse.data)
+      } else if (dialogflowResponse.action === 'ADD_GOAL') {
+        addGoal(dialogflowResponse.data)
+      }
+      
+    } catch (error) {
+      console.error('Error sending message:', error)
+      
+      const errorMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'bot',
+        content: 'Lo siento, tuve un problema procesando tu mensaje. ¿Puedes intentar de nuevo?',
+        timestamp: new Date().toISOString()
+      }
+      
+      dispatch({ type: 'ADD_MESSAGE', payload: errorMessage })
     }
     
-    dispatch({ type: 'ADD_MESSAGE', payload: botMessage })
     dispatch({ type: 'SET_TYPING', payload: false })
     
     // Update suggestions based on context
@@ -211,7 +240,9 @@ export const ChatProvider = ({ children }) => {
       '¿Cómo está mi presupuesto?',
       'Quiero ahorrar $500',
       'Gasté $40 en entretenimiento',
-      'Recibí $800 de mi trabajo'
+      'Recibí $800 de mi trabajo',
+      'Analiza mis gastos',
+      'Dame consejos de ahorro'
     ]
     dispatch({ type: 'UPDATE_SUGGESTIONS', payload: newSuggestions })
   }
